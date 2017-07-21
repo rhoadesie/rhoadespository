@@ -1,9 +1,42 @@
 library(dplyr)
 
 data <- read.csv("svlpl.csv")
-disc <- read.csv("Discard.csv")
+#disc <- read.csv("Discard.csv")
+discard <- data.frame("team" = "anyteam", "Wk" = "wk")
 
-wk16 <- filter(data, Wk16 > .5)
-wk16 <- arrange(wk16, desc(Wk16))
-pkwk16.1 <- top_n(wk16,1,Wk16)
+wk1 <- select(data, Team, Wk1); wk1$wk = "Wk1"; colnames(wk1) <- c("Team", "Prb", "Wk")
+wk2 <- select(data, Team, Wk2); wk2$wk = "Wk2"; colnames(wk2) <- c("Team", "Prb", "Wk")
+wk3 <- select(data, Team, Wk3); wk3$wk = "Wk3"; colnames(wk3) <- c("Team", "Prb", "Wk")
+wk4 <- select(data, Team, Wk4); wk4$wk = "Wk4"; colnames(wk4) <- c("Team", "Prb", "Wk")
+wk5 <- select(data, Team, Wk5); wk5$wk = "Wk5"; colnames(wk5) <- c("Team", "Prb", "Wk")
+wk6 <- select(data, Team, Wk6); wk6$wk = "Wk6"; colnames(wk6) <- c("Team", "Prb", "Wk")
+wk7 <- select(data, Team, Wk7); wk7$wk = "Wk7"; colnames(wk7) <- c("Team", "Prb", "Wk")
+wk8 <- select(data, Team, Wk8); wk8$wk = "Wk8"; colnames(wk8) <- c("Team", "Prb", "Wk")
+wk9 <- select(data, Team, Wk9); wk9$wk = "Wk9"; colnames(wk9) <- c("Team", "Prb", "Wk")
+wk10 <- select(data, Team, Wk10); wk10$wk = "Wk10"; colnames(wk10) <- c("Team", "Prb", "Wk")
+wk11 <- select(data, Team, Wk11); wk11$wk = "Wk11"; colnames(wk11) <- c("Team", "Prb", "Wk")
+wk12 <- select(data, Team, Wk12); wk12$wk = "Wk12"; colnames(wk12) <- c("Team", "Prb", "Wk")
+wk13 <- select(data, Team, Wk13); wk13$wk = "Wk13"; colnames(wk13) <- c("Team", "Prb", "Wk")
+wk14 <- select(data, Team, Wk14); wk14$wk = "Wk14"; colnames(wk14) <- c("Team", "Prb", "Wk")
+wk15 <- select(data, Team, Wk15); wk15$wk = "Wk15"; colnames(wk15) <- c("Team", "Prb", "Wk")
+wk16 <- select(data, Team, Wk16); wk16$wk = "Wk16"; colnames(wk16) <- c("Team", "Prb", "Wk")
 
+df <- rbind(wk1, wk2); df <- rbind(df, wk3); df <- rbind(df, wk4)
+df <- rbind(df, wk5); df <- rbind(df, wk6); df <- rbind(df, wk7)
+df <- rbind(df, wk8); df <- rbind(df, wk9); df <- rbind(df, wk10)
+df <- rbind(df, wk11); df <- rbind(df, wk12); df <- rbind(df, wk13)
+df <- rbind(df, wk14); df <- rbind(df, wk15); df <- rbind(df, wk16)
+
+df <- arrange(df, desc(Prb))
+
+a <- as.list(discard)
+
+df = filter(df, Team != a)
+df = filter(df, Wk != a)
+
+pth1 <- top_n(df, 1, Prb)
+a <- append(a, as.list(pth1))
+
+df = filter(df, Team != a)
+df = filter(df, Wk != a)
+pth1 <- rbind(pth1, top_n(df, 1, Prb))
