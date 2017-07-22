@@ -2,7 +2,7 @@ library(dplyr)
 
 data <- read.csv("svlpl.csv")
 #disc <- read.csv("Discard.csv")
-discard <- data.frame("team" = "anyteam", "Wk" = "wk")
+discard <- data.frame("Team" = "anyteam", "Wk" = "wk")
 
 wk1 <- select(data, Team, Wk1); wk1$wk = "Wk1"; colnames(wk1) <- c("Team", "Prb", "Wk")
 wk2 <- select(data, Team, Wk2); wk2$wk = "Wk2"; colnames(wk2) <- c("Team", "Prb", "Wk")
@@ -29,14 +29,48 @@ df <- rbind(df, wk14); df <- rbind(df, wk15); df <- rbind(df, wk16)
 
 df <- arrange(df, desc(Prb))
 
-a <- as.list(discard)
+df <- df[!(df$Team %in% discard$Team),]
+df <- df[!(df$Wk %in% discard$Wk),]
 
-df = filter(df, Team != a)
-df = filter(df, Wk != a)
 
-pth1 <- top_n(df, 1, Prb)
-a <- append(a, as.list(pth1))
+pth1 <- df[1,]
 
-df = filter(df, Team != a)
-df = filter(df, Wk != a)
-pth1 <- rbind(pth1, top_n(df, 1, Prb))
+a <- select(pth1, Team, Wk)
+discard <- rbind(discard, a)
+
+df <- df[!(df$Team %in% discard$tTeam),]
+df <- df[!(df$Wk %in% discard$Wk),]
+b <- df[1,]
+pth1 <- rbind(pth1, b)
+
+a <- select(pth1, Team, Wk)
+discard <- rbind(discard, a)
+
+df <- df[!(df$Team %in% discard$tTeam),]
+df <- df[!(df$Wk %in% discard$Wk),]
+b <- df[1,]
+pth1 <- rbind(pth1, b)
+
+a <- select(pth1, Team, Wk)
+discard <- rbind(discard, a)
+
+df <- df[!(df$Team %in% discard$tTeam),]
+df <- df[!(df$Wk %in% discard$Wk),]
+b <- df[1,]
+pth1 <- rbind(pth1, b)
+
+a <- select(pth1, Team, Wk)
+discard <- rbind(discard, a)
+
+df <- df[!(df$Team %in% discard$tTeam),]
+df <- df[!(df$Wk %in% discard$Wk),]
+b <- df[1,]
+pth1 <- rbind(pth1, b)
+
+a <- select(pth1, Team, Wk)
+discard <- rbind(discard, a)
+
+df <- df[!(df$Team %in% discard$tTeam),]
+df <- df[!(df$Wk %in% discard$Wk),]
+b <- df[1,]
+pth1 <- rbind(pth1, b)
