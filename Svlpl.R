@@ -43,34 +43,14 @@ df <- df[!(df$Wk %in% discard$Wk),]
 b <- df[1,]
 pth1 <- rbind(pth1, b)
 
-a <- select(pth1, Team, Wk)
-discard <- rbind(discard, a)
 
-df <- df[!(df$Team %in% discard$tTeam),]
-df <- df[!(df$Wk %in% discard$Wk),]
-b <- df[1,]
-pth1 <- rbind(pth1, b)
-
-a <- select(pth1, Team, Wk)
-discard <- rbind(discard, a)
-
-df <- df[!(df$Team %in% discard$tTeam),]
-df <- df[!(df$Wk %in% discard$Wk),]
-b <- df[1,]
-pth1 <- rbind(pth1, b)
-
-a <- select(pth1, Team, Wk)
-discard <- rbind(discard, a)
-
-df <- df[!(df$Team %in% discard$tTeam),]
-df <- df[!(df$Wk %in% discard$Wk),]
-b <- df[1,]
-pth1 <- rbind(pth1, b)
-
-a <- select(pth1, Team, Wk)
-discard <- rbind(discard, a)
-
-df <- df[!(df$Team %in% discard$tTeam),]
-df <- df[!(df$Wk %in% discard$Wk),]
-b <- df[1,]
-pth1 <- rbind(pth1, b)
+for (i in 1:14) {
+  a <- select(pth1, Team, Wk)
+    discard <- rbind(discard, a)
+    df <- df[!(df$Team %in% discard$tTeam),]
+    df <- df[!(df$Wk %in% discard$Wk),]
+    b <- df[1,]
+    pth1 <- rbind(pth1, b)
+        next
+}
+write.csv(pth1, "Path1.csv")
