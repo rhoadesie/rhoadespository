@@ -1,0 +1,44 @@
+library('devtools')
+library('pbapply')
+library('curl')
+library('knitr')
+library('dplyr')
+library('xlsx')
+library("RMySQL")
+library('sqldf')
+library(collegeballR)
+
+yr <- 2017
+teams <- team_mapping(yr,"Women's Basketball")
+teamIds <- as.numeric(teams$team_id)
+
+pss_raw <- pblapply(teamIds, function(x) {
+    Sys.sleep(0.8)
+    pss_one <- team_stats(x,yr,"WBB",by="game")
+    pss_one$teamID <- x
+    pss_one
+  })
+
+   pss_all <- do.call(rbind,pss_raw)
+  
+  pss_all$MP <- gsub("/","",pss_all$MP)
+  pss_all$FGM <- gsub("/","",pss_all$FGM)
+  pss_all$FGA <- gsub("/","",pss_all$FGA)
+  pss_all$"3FG" <- gsub("/","",pss_all$"3FG")
+  pss_all$"3FGA" <- gsub("/","",pss_all$"3FGA")
+  pss_all$FT <- gsub("/","",pss_all$FT)
+  pss_all$FTA <- gsub("/","",pss_all$FTA)
+  pss_all$PTS <- gsub("/","",pss_all$PTS)
+  pss_all$AST <- gsub("/","",pss_all$AST)
+  
+  pss_all$FTA <- as.numeric(pss_all$FTA)
+  pss_all$FGA <- as.numeric(pss_all$FGA)
+  pss_all$ORebs <- as.numeric(pss_all$ORebs)
+  pss_all$TO <- as.numeric(pss_all$TO)
+  pss_all$poss <- round(pss_all$FGA + 0.475*pss_all$FTA - pss_all$ORebs + pss_all$TO,1)
+ 
+
+dbconn <- dbConnect(MySQL(), user=‘user’, pwd=‘redacted’
+                    , dbname=‘db’, host = "127.99.0.1”, port=2304)
+dbWriteTable(conn=dbconn, name='team_stats', value=pss_all, row.names=FALSE,overwrite=FALSE,append=TRUE) 
+dbDisconnect(dbconn)
